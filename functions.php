@@ -1,43 +1,43 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-function dableapproval-theme_setup() {
+function dable-theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
     add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption'));
 }
-add_action('after_setup_theme', 'dableapproval-theme_setup');
+add_action('after_setup_theme', 'dable-theme_setup');
 
-function dableapproval-theme_scripts() {
-    wp_enqueue_style('dableapproval-theme-style', get_stylesheet_uri(), array(), '1.0.0');
+function dable-theme_scripts() {
+    wp_enqueue_style('dable-theme-style', get_stylesheet_uri(), array(), '1.0.0');
 }
-add_action('wp_enqueue_scripts', 'dableapproval-theme_scripts');
+add_action('wp_enqueue_scripts', 'dable-theme_scripts');
 
-function dableapproval-theme_admin_menu() {
+function dable-theme_admin_menu() {
     add_menu_page(
         '테마 설정',
         '승인용 테마',
         'manage_options',
-        'dableapproval-theme-settings',
-        'dableapproval-theme_settings_page',
+        'dable-theme-settings',
+        'dable-theme_settings_page',
         'dashicons-admin-generic',
         3
     );
 }
-add_action('admin_menu', 'dableapproval-theme_admin_menu');
+add_action('admin_menu', 'dable-theme_admin_menu');
 
-function dableapproval-theme_settings_page() {
-    if (isset($_POST['save_settings']) && check_admin_referer('dableapproval-theme_settings_nonce')) {
+function dable-theme_settings_page() {
+    if (isset($_POST['save_settings']) && check_admin_referer('dable-theme_settings_nonce')) {
         if (isset($_POST['custom_head_code'])) {
             update_option('custom_head_code', wp_unslash($_POST['custom_head_code']));
         }
         echo '<div class="notice notice-success"><p>설정이 저장되었습니다.</p></div>';
     }
     
-    if (isset($_POST['generate_posts']) && check_admin_referer('dableapproval-theme_generate_nonce')) {
+    if (isset($_POST['generate_posts']) && check_admin_referer('dable-theme_generate_nonce')) {
         $count = intval($_POST['post_count']);
         if ($count > 0 && $count <= 100) {
-            dableapproval-theme_generate_posts($count);
+            dable-theme_generate_posts($count);
             echo '<div class="notice notice-success"><p>' . $count . '개의 글이 생성되었습니다.</p></div>';
         }
     }
@@ -144,14 +144,14 @@ add_action('wp_ajax_generate_approval_posts', function() {
     }
     $count = intval($_POST['post_count']);
     if ($count > 0 && $count <= 100) {
-        dableapproval-theme_generate_posts($count);
+        dable-theme_generate_posts($count);
         wp_send_json_success($count . '개 생성 완료');
     } else {
         wp_send_json_error('잘못된 개수입니다.');
     }
 });
 
-function dableapproval-theme_generate_posts($count) {
+function dable-theme_generate_posts($count) {
     $topics = array(
         array('건강', '건강 관리', '운동', '영양', '질병 예방', '정신 건강'),
         array('요리', '레시피', '식재료', '조리법', '영양소', '식단'),
